@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title> Gym Freak </title>
+     <style>
+       
+       .col-md-3
+{
+display: inline-block;
+margin-left:-4px;
+}
+.carousel-indicators .active {
+background-color: blue;
+}
+.col-md-3 img{
+width: 170px;
+height: 200px;
+}
+body .carousel-indicator li{
+background-color: blue;
+}
+body .carousel-indicators{
+bottom: 0;
+}
+body .carousel-control-prev-icon,
+body .carousel-control-next-icon{
+background-color: blue;
+}
+.carousel-control-prev,
+.carousel-control-next{
+top: auto;
+bottom: auto;
+padding-top: 222px;
+}
+body .no-padding{
+padding-left: 0;
+padding-right: 0;
+}
+  </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/shop">Gym Freak</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/shop/about">Exercise Routines</a>
+          </li>
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/shop/tracker">Meal Tracker</a>
+          </li>
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/blog">Blog</a>
+          </li>
+    
+           <li class="nav-item">
+            <a class="nav-link" href="/shop/contact">Activity Tracker</a>
+          </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+sagittis lacus vel augue laoreet rutrum faucibus.">
+
+
+  Cart(<span id="cart">0</span>)
+</button>
+  </div>
+</nav>
+  {% block body %} {% endblock %}
+  <main role="main">
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-3">Gym Freak - Fitness Tracker!</h1>
+        <p>Welcome to Gym Freak, where we believe that every step you take is a stride towards a healthier, more empowered you. In a world that never stops moving, our cutting-edge fitness trackers are designed to be your ultimate companion on the path to wellness. Whether you're a fitness enthusiast, a casual walker, or a seasoned athlete, our trackers are crafted to meet your unique needs, helping you track, analyze, and elevate your fitness game. At Gym Freak, we're not just about counting steps; we're about making every step count. Our advanced fitness trackers go beyond the basics, offering state-of-the-art features that seamlessly integrate with your lifestyle. From heart rate monitoring and sleep tracking to personalized workout insights, we are committed to providing a holistic approach to your well-being. Our trackers are not just devices; they are your fitness confidantes, empowering you to set and achieve your wellness goals.</p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+      </div>
+    </div>
+  
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Features That Set Us Apart</h2>
+          <p>Precise Fitness Tracking: Dive into the details with our accurate fitness tracking capabilities. Monitor your steps, distance, calories burned, and more with precision to tailor your fitness routine to your goals.
+            Heart Health at Your Fingertips: Keep your heart health in check with real-time heart rate monitoring. Our trackers ensure you stay within your target heart rate zone, making every workout effective and safe.
+            Insights for Better Sleep: Understand your sleep patterns and make the most out of your rest. Our sleep tracking feature provides insights into your sleep quality, helping you wake up refreshed and ready to tackle the day.
+            Personalized Workouts: Say goodbye to generic workouts. Our fitness trackers analyze your activity data to suggest personalized workouts, ensuring you get the most out of every sweat session.
+            </p>
+          <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Seamless Integration</h2>
+          <p>Gym Freak seamlessly integrates into your daily routine. Connect with our user-friendly app to access detailed reports, set goals, and challenge yourself. Our trackers sync effortlessly with your smartphone, putting your fitness journey in the palm of your hand.</p>
+          <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Join the Gym Freak Community</h2>
+          <p>Embark on a fitness journey like never before by joining the [Your Fitness Tracker Brand] community. Connect with like-minded individuals, share your achievements, and inspire others on their paths to wellness. Our community is a supportive space for every fitness level, fostering motivation and camaraderie.</p>
+          <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+        </div>
+      </div>
+  
+      <hr>
+  
+    </div> <!-- /container -->
+  
+  </main>
+  
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    if (localStorage.getItem('cart') == null) {
+      var cart = {};
+  } else {
+      cart = JSON.parse(localStorage.getItem('cart'));
+  }
+  console.log(cart);
+  var sum = 0;
+  var totalPrice = 0;
+  if ($.isEmptyObject(cart)) {
+      //if object is empty
+      mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
+      $('#items').append(mystr);
+  } else {
+      for (item in cart) {
+          let name = cart[item][1];
+          let qty = cart[item][0];
+          let itemPrice = cart[item][2];
+          sum = sum + qty;
+          totalPrice = totalPrice + qty* itemPrice;
+          mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                      ${name}
+                      <span class="badge badge-primary badge-pill">${qty}</span>
+                  </li>`
+          $('#items').append(mystr);
+      }
+  }
+  document.getElementById('cart').innerHTML = sum;
+  document.getElementById('totalPrice').innerHTML = totalPrice;
+  $('#itemsJson').val(JSON.stringify(cart));
+  {% if thank %}
+  alert('Thanks for ordering with us. Your order is is {{id}}. Use it to track your order using our order tracker');
+  localStorage.clear();
+  document.location = "/shop";
+  {% endif %}
+  $('#amount').val($('#totalPrice').html())
+  </body>
+</html>
