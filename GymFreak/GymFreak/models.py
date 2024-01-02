@@ -1,18 +1,18 @@
 from django.db import models
 
 # Create your models here.
-class Product(models.Model):
-    product_id = models.AutoField
-    product_name = models.CharField(max_length=50)
+class Ex_Routines(models.Model):
+    routine_id = models.AutoField
+    routine_name = models.CharField(max_length=50)
     category = models.CharField(max_length=50, default="")
     subcategory = models.CharField(max_length=50, default="")
     price = models.IntegerField(default=0)
     desc = models.CharField(max_length=300)
     pub_date = models.DateField()
-    image = models.ImageField(upload_to='shop/images', default="")
+    image = models.ImageField(upload_to='Ex_Routines/images', default="")
 
     def __str__(self):
-        return self.product_name
+        return self.routine_name
 
 class Orders(models.Model):
     order_id = models.AutoField(primary_key=True)
