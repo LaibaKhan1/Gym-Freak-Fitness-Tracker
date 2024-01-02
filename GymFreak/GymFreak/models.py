@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Ex_Routines(models.Model):
+class ex_routines(models.Model):
     routine_id = models.AutoField
     routine_name = models.CharField(max_length=50)
     category = models.CharField(max_length=50, default="")
