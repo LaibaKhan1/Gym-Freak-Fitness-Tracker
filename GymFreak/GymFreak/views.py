@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from .models import ex_routines
 from math import ceil
 import requests
-from collections.abc import MutableMapping
 # Create your views here.
 
 def blog(request):
@@ -11,18 +10,6 @@ def blog(request):
 
 def index(request):
     return render(request, 'GymFreak/index.html')
-
-# def Ex_Routines(request):
-#     allProds = []
-#     catprods = ex_routines.objects.values('category', 'id')
-#     cats = {item['category'] for item in catprods}
-#     for cat in cats:
-#         prod = ex_routines.objects.filter(category=cat)
-#         n = len(prod)
-#         nSlides = n // 4 + math.ceil((n / 4) - (n // 4))
-#         allProds.append([prod, range(1, nSlides), nSlides])
-#     params = {'allProds':allProds}
-#     return render(request, 'Ex_Routines/index.html', params)
 
 def Ex_Routines(request):
     categories = ex_routines.objects.values_list('category', flat=True).distinct()
