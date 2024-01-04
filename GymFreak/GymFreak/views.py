@@ -50,23 +50,42 @@ def calculate_calories(food_name):
     data = {
         'ingr': [food_name],
     }
-
     response = requests.post(api_endpoint, params=payload, json=data)
 
+    # Parse the response
     if response.status_code == 200:
         result = response.json()
 
-        if isinstance(result['calories'], int):
-            return None
+        # Check if 'calories' key exists in the response
+        if 'calories' in result:
+            # If 'calories' is an integer, handle it accordingly
+            if isinstance(result['calories'], int):
+                total_calories = result['calories']
+                return [total_calories]
+            
+            # Check if 'total' key is directly present in the 'calories' object
+            elif 'total' in result['calories']:
+                # Extract 'total' calories from the 'calories' dictionary
+                total_calories = result['calories']['total']
 
-        if 'calories' in result and 'total' in result['calories']:
-            calories = result['calories']['total']
-            return calories
-        else:
-            return None
+                # Handle the case where 'total_calories' is not None
+                if total_calories is not None:
+                    # Convert 'total_calories' to an integer if it's a string
+                    total_calories = int(total_calories)
+
+                    # Return the total calories as a list
+                    return [total_calories]
+
+        # Handle the case where 'calories' key is not present in the API response
+        return [None]
     else:
-        return None
+        # Debugging statement
+        print("API Request Failed. Status Code:", response.status_code)
 
+        # Handle API errors
+        return [None]
+
+    
 # def Meal_Tracker(request):
 #     if request.method == 'POST':
 #         breakfast_diet = request.POST.get('breakfast_diet', '')
@@ -103,13 +122,11 @@ def Meal_Tracker(request):
         dinner_calories = calculate_calories(dinner_diet)
 
         if None in [breakfast_calories, lunch_calories, dinner_calories]:
-            print("API request failed")
             return render(request, 'Meal_Tracker/index.html', {'thank': False})
 
-        total_calories = breakfast_calories + lunch_calories + dinner_calories
+        total_calories = sum([calories[0] for calories in [breakfast_calories, lunch_calories, dinner_calories] if calories is not None])
 
-        print("Total Calories:", total_calories)
-
+        # Pass total_calories to the template
         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
