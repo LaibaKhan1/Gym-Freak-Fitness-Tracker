@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import ex_routines
 from math import ceil
 import requests
+from collections.abc import MutableMapping
 # Create your views here.
 
 def blog(request):
@@ -24,10 +25,8 @@ def index(request):
 #     return render(request, 'Ex_Routines/index.html', params)
 
 def Ex_Routines(request):
-    # Get all unique categories
     categories = ex_routines.objects.values_list('category', flat=True).distinct()
 
-    # Organize data for each category
     allProds = []
     for category in categories:
         products = ex_routines.objects.filter(category=category)
@@ -38,36 +37,60 @@ def Ex_Routines(request):
     return render(request, 'Ex_Routines/index.html', {'allProds': allProds})
 
 def calculate_calories(food_name):
-    # Replace 'YOUR_APP_ID' and 'YOUR_APP_KEY' with your Edamam API credentials
-    app_id = 'API signup'
-    app_key = '7fa82f0a'
+    app_id = '7fa82f0a'
+    app_key = 'a216df8f46fbd7fde9b7f71d4b650f90'
     
-    # Edamam API endpoint
     api_endpoint = 'https://api.edamam.com/api/nutrition-details'
     
-    # Prepare the request payload
     payload = {
         'app_id': app_id,
         'app_key': app_key,
     }
 
-    # The 'ingr' parameter should contain the food name
     data = {
         'ingr': [food_name],
     }
 
-    # Make the API request
     response = requests.post(api_endpoint, params=payload, json=data)
 
-    # Parse the response
     if response.status_code == 200:
         result = response.json()
-        # Extract calories from the API response
-        calories = result.get('calories', {}).get('total', 0)
-        return calories
+
+        if isinstance(result['calories'], int):
+            return None
+
+        if 'calories' in result and 'total' in result['calories']:
+            calories = result['calories']['total']
+            return calories
+        else:
+            return None
     else:
-        # Handle API errors
         return None
+
+# def Meal_Tracker(request):
+#     if request.method == 'POST':
+#         breakfast_diet = request.POST.get('breakfast_diet', '')
+#         lunch_diet = request.POST.get('lunch_diet', '')
+#         dinner_diet = request.POST.get('dinner_diet', '')
+
+#         # Calculate calories for each meal using the Edamam API
+#         breakfast_calories = calculate_calories(breakfast_diet)
+#         lunch_calories = calculate_calories(lunch_diet)
+#         dinner_calories = calculate_calories(dinner_diet)
+
+#         # Check if any of the API calls failed
+#         if None in [breakfast_calories, lunch_calories, dinner_calories]:
+#             # Handle the case where one or more API requests failed
+#             return render(request, 'Meal_Tracker/index.html', {'thank': False})
+
+#         # Calculate total calories
+#         total_calories = breakfast_calories + lunch_calories + dinner_calories
+
+#         # Pass total_calories to the template, and set thank to True
+#         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
+
+#     return render(request, 'Meal_Tracker/index.html', {'thank': False})
+
 
 def Meal_Tracker(request):
     if request.method == 'POST':
@@ -75,13 +98,17 @@ def Meal_Tracker(request):
         lunch_diet = request.POST.get('lunch_diet', '')
         dinner_diet = request.POST.get('dinner_diet', '')
 
-        # Calculate calories for each meal
         breakfast_calories = calculate_calories(breakfast_diet)
         lunch_calories = calculate_calories(lunch_diet)
         dinner_calories = calculate_calories(dinner_diet)
 
-        # Calculate total calories
+        if None in [breakfast_calories, lunch_calories, dinner_calories]:
+            print("API request failed")
+            return render(request, 'Meal_Tracker/index.html', {'thank': False})
+
         total_calories = breakfast_calories + lunch_calories + dinner_calories
+
+        print("Total Calories:", total_calories)
 
         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
