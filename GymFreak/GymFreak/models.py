@@ -46,5 +46,5 @@ class ex_routines(models.Model):
 #     update_desc = models.CharField(max_length=5000)
 #     timestamp = models.DateField(auto_now_add=True)
 
-    def __str__(self):
-        return self.update_desc[0:7] + "..."
+    # def __str__(self):
+    #     return self.update_desc[0:7] + "..."
