@@ -24,10 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.index, name='GymFreak'),
     path("Blog/", views.blog, name='Blog'),
-    # path("login_signup/", views.ex_routines),
     path("Ex_Routines/", views.Ex_Routines, name='Ex_Routines'),
     path("exercise/<int:myid>", views.exerciseView, name='exercise'),
-    # path("Activity_Tracker/", include('Activity_Tracker.urls')),
+    path("Activity_Tracker/", views.Activity_Tracker, name='Activity_Tracker'),
     path("Meal_Tracker/", views.Meal_Tracker, name='Meal_Tracker'),
 ] 
 if settings.DEBUG:

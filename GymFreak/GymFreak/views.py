@@ -24,8 +24,6 @@ def Ex_Routines(request):
     return render(request, 'Ex_Routines/index.html', {'allProds': allProds})
 
 def exerciseView(request, myid):
-
-    # Fetch the product using the id
     exercise = ex_routines.objects.filter(id=myid)
     return render(request, 'Ex_Routines/exeview.html', {'product': exercise[0]})
 
@@ -76,3 +74,29 @@ def Meal_Tracker(request):
         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
+
+def Activity_Tracker(request):
+    if request.method == 'POST':
+        weight = float(request.POST.get('weight'))
+        height = float(request.POST.get('height'))
+        age = int(request.POST.get('age'))
+        activity_level = request.POST.get('activity_level')
+
+        bmi = calculate_bmi(weight, height)
+        calories_burned = calculate_calories_burned(weight, height, age, activity_level)
+
+        return render(request, 'Activity_Tracker/index.html', {
+            'bmi_calculated': True,
+            'bmi': round(bmi, 2),
+            'calories_burned': round(calories_burned, 2),
+        })
+
+    return render(request, 'Activity_Tracker/index.html')
+
+def calculate_bmi(weight, height):
+    bmi = weight / ((height / 100) ** 2)
+    return bmi
+
+def calculate_calories_burned(weight, height, age, activity_level):
+    calories_burned = 2000  
+    return calories_burned
