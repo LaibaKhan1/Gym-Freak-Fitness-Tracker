@@ -23,11 +23,11 @@ def Ex_Routines(request):
 
     return render(request, 'Ex_Routines/index.html', {'allProds': allProds})
 
-def productView(request, myid):
+def exerciseView(request, myid):
 
     # Fetch the product using the id
     exercise = ex_routines.objects.filter(id=myid)
-    return render(request, 'Ex_Routines/prodview.html', {'product':exercise[0]})
+    return render(request, 'Ex_Routines/exeview.html', {'product': exercise[0]})
 
 def calculate_calories(food_name):
     app_id = '7fa82f0a'

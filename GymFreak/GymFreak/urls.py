@@ -26,7 +26,9 @@ urlpatterns = [
     path("Blog/", views.blog, name='Blog'),
     # path("login_signup/", views.ex_routines),
     path("Ex_Routines/", views.Ex_Routines, name='Ex_Routines'),
-    path("prodview/<int:myid>", views.productView, name='prodview'),
+    path("exercise/<int:myid>", views.exerciseView, name='exercise'),
     # path("Activity_Tracker/", include('Activity_Tracker.urls')),
     path("Meal_Tracker/", views.Meal_Tracker, name='Meal_Tracker'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
