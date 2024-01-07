@@ -98,5 +98,31 @@ def calculate_bmi(weight, height):
     return bmi
 
 def calculate_calories_burned(weight, height, age, activity_level):
-    calories_burned = 2000  
-    return calories_burned
+    api_key = '4d5a3265e8bb88415d11ed602f0aa05a'
+    api_endpoint = 'https://api.nutritionix.com/v1_1/exercise'
+
+    payload = {
+        'query': activity_level,
+        'gender': 'male',
+        'weight_kg': weight,
+        'height_cm': height,
+        'age': age,
+    }
+
+    headers = {
+        'x-app-id': api_key,
+        'x-app-key': 'b23c54ae',
+    }
+
+    try:
+        response = requests.post(api_endpoint, data=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+
+        calories_burned = data.get('exercises', [{}])[0].get('nf_calories', 0)
+
+        return calories_burned
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching calories burned: {e}")
+        return 0
