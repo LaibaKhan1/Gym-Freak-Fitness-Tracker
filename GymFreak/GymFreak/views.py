@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ex_routines
+from .models import ex_routines, CalorieEntry, CaloriesBurned
+from .forms import CalorieBurnedEntryForm, CalorieEntryForm
 from math import ceil
 import requests
+from .forms import CalorieEntryForm
 # Create your views here.
 
 def blog(request):
@@ -75,15 +77,48 @@ def Meal_Tracker(request):
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
 
+def calorie_entry(request):
+    if request.method == 'POST':
+        form = CalorieEntryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('calorie_entry')  # Redirect to the same page after submission
+    else:
+        form = CalorieEntryForm()
+
+    entries = CalorieEntry.objects.all()
+
+    return render(request, 'Meal_Tracker/index.html', {'form': form, 'entries': entries})
+
+def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes):
+    BMR_MALE = 88.362
+    BMR_FEMALE = 447.593
+    ACTIVITY_FACTOR = {
+        'sedentary': 1.2,
+        'light': 1.375,
+        'moderate': 1.55,
+        'active': 1.725,
+        'very_active': 1.9,
+    }
+    if gender == 'M':
+        bmr = BMR_MALE + (13.397 * weight) + (4.799 * height) - (5.677 * age)
+    else:
+        bmr = BMR_FEMALE + (9.247 * weight) + (3.098 * height) - (4.330 * age)
+
+    calories_burned = bmr * ACTIVITY_FACTOR.get(exercise_type, 1.0) * (duration_minutes / 60.0)
+    return calories_burned
+
 def Activity_Tracker(request):
     if request.method == 'POST':
         weight = float(request.POST.get('weight'))
         height = float(request.POST.get('height'))
         age = int(request.POST.get('age'))
-        activity_level = request.POST.get('activity_level')
+        exercise_type = str(request.POST.get('exercise_type'))
+        duration = int(request.POST.get('duration_minutes'))
+        gender = str(request.POST.get('gender'))
 
         bmi = calculate_bmi(weight, height)
-        calories_burned = calculate_calories_burned(weight, height, age, activity_level)
+        calories_burned = calorie_Burned(weight, height, age, gender, exercise_type, duration)
 
         return render(request, 'Activity_Tracker/index.html', {
             'bmi_calculated': True,
@@ -97,32 +132,32 @@ def calculate_bmi(weight, height):
     bmi = weight / ((height / 100) ** 2)
     return bmi
 
-def calculate_calories_burned(weight, height, age, activity_level):
-    api_key = '4d5a3265e8bb88415d11ed602f0aa05a'
-    api_endpoint = 'https://api.nutritionix.com/v1_1/exercise'
+# def calculate_calories_burned(weight, height, age, activity_level):
+#     api_key = '4d5a3265e8bb88415d11ed602f0aa05a'
+#     api_endpoint = 'https://api.nutritionix.com/v1_1/exercise'
 
-    payload = {
-        'query': activity_level,
-        'gender': 'male',
-        'weight_kg': weight,
-        'height_cm': height,
-        'age': age,
-    }
+#     payload = {
+#         'query': activity_level,
+#         'gender': 'male',
+#         'weight_kg': weight,
+#         'height_cm': height,
+#         'age': age,
+#     }
 
-    headers = {
-        'x-app-id': api_key,
-        'x-app-key': 'b23c54ae',
-    }
+#     headers = {
+#         'x-app-id': api_key,
+#         'x-app-key': 'b23c54ae',
+#     }
 
-    try:
-        response = requests.post(api_endpoint, data=payload, headers=headers)
-        response.raise_for_status()
-        data = response.json()
+#     try:
+#         response = requests.post(api_endpoint, data=payload, headers=headers)
+#         response.raise_for_status()
+#         data = response.json()
 
-        calories_burned = data.get('exercises', [{}])[0].get('nf_calories', 0)
+#         calories_burned = data.get('exercises', [{}])[0].get('nf_calories', 0)
 
-        return calories_burned
+#         return calories_burned
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching calories burned: {e}")
-        return 0
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error fetching calories burned: {e}")
+#         return 0

@@ -39,6 +39,54 @@
         padding-left: 0;
         padding-right: 0;
       }
+      .exercise-slideshow {
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-md-2 {
+    flex: 0 0 16.66667%;
+    max-width: 16.66667%;
+    position: relative;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px; /* Add border radius for rounded corners */
+    transition: transform 0.3s ease-in-out;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Center the image on hover */
+.col-md-2:hover .img-fluid {
+    transform: scale(1.5); /* Increase the size on hover */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: Style the Step text */
+.text-center {
+    font-weight: bold;
+}
   </style>
   </head>
   <body>
@@ -103,11 +151,8 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
         </div>
     </div>
 </div>
-<div class="row mt-4">
-  <div class="col-md-12">
-      <h5 class="mb-4" style="font-size: 24px; font-weight: bold; color: #007bff;">Exercise Steps</h5>
-  </div>
-</div>
+<div class="exercise-slideshow">
+  <h2 style="font-size: 32px; font-weight: bold; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px;">Exercise Steps</h2>
 <div class="row">
   <!-- Example: Repeat the following block for each image -->
   <div class="col-md-2 mb-3">
@@ -116,23 +161,23 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
   </div>
   <div class="col-md-2 mb-3">
     <img src="{{ product.step2_image.url }}" alt="Step 1" class="img-fluid">
-    <p class="text-center mt-2">Step 1</p>
+    <p class="text-center mt-2">Step 2</p>
 </div>
 <div class="col-md-2 mb-3">
   <img src="{{ product.step3_image.url }}" alt="Step 1" class="img-fluid">
-  <p class="text-center mt-2">Step 1</p>
+  <p class="text-center mt-2">Step 3</p>
 </div>
 <div class="col-md-2 mb-3">
   <img src="{{ product.step4_image.url }}" alt="Step 1" class="img-fluid">
-  <p class="text-center mt-2">Step 1</p>
+  <p class="text-center mt-2">Step 4</p>
 </div>
 <div class="col-md-2 mb-3">
   <img src="{{ product.step5_image.url }}" alt="Step 1" class="img-fluid">
-  <p class="text-center mt-2">Step 1</p>
+  <p class="text-center mt-2">Step 5</p>
 </div>
 <div class="col-md-2 mb-3">
   <img src="{{ product.step6_image.url }}" alt="Step 1" class="img-fluid">
-  <p class="text-center mt-2">Step 1</p>
+  <p class="text-center mt-2">Step 6</p>
 </div>
   <!-- Repeat the above block for each step -->
 </div>
