@@ -38,6 +38,41 @@ class CalorieEntry(models.Model):
 
     def __str__(self):
         return f'{self.calories_consumed} calories on {self.date} at {self.time}'
+    
+class CaloriesBurned(models.Model):
+    time = models.TimeField()
+    date = models.DateField()
+    weight = models.FloatField()
+    age = models.IntegerField()
+    gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
+    exercise_type = models.CharField(max_length=255)
+    duration_minutes = models.IntegerField()
+    
+    def __str__(self):
+        return self.weight
+    
+    # def calculate_calories_burned(self):
+        # Constants for Harris-Benedict equation
+        # BMR_MALE = 88.362
+        # BMR_FEMALE = 447.593
+        # ACTIVITY_FACTOR = {
+        #     'sedentary': 1.2,
+        #     'light': 1.375,
+        #     'moderate': 1.55,
+        #     'active': 1.725,
+        #     'very_active': 1.9,
+        # }
+
+        # # Determine BMR based on gender
+        # if self.gender == 'M':
+        #     bmr = BMR_MALE + (13.397 * self.weight) + (4.799 * self.height) - (5.677 * self.age)
+        # else:
+        #     bmr = BMR_FEMALE + (9.247 * self.weight) + (3.098 * self.height) - (4.330 * self.age)
+
+        # # Calculate calories burned by multiplying BMR with activity factor and duration
+        # calories_burned = bmr * ACTIVITY_FACTOR.get(self.exercise_type, 1.0) * (self.duration_minutes / 60.0)
+
+        # return calories_burned
 # class Product(models.Model):
 #     routine_id = models.AutoField
 #     routine_name = models.CharField(max_length=50)
