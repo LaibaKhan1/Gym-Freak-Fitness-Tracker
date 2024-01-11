@@ -29,11 +29,11 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-AUTH_USER_MODEL = 'login_signup.CustomUser'
+# AUTH_USER_MODEL = 'login_signup.CustomUser'
 
 INSTALLED_APPS = [
     'GymFreak.apps.GymFreakConfig',
-    'GymFreak.apps.login_signupConfig',
+    # 'GymFreak.apps.login_signupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -1,16 +1,16 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class CustomUser(AbstractUser):
-    User_id = models.AutoField
-    User_name = models.CharField(max_length=50, default="")
-    User_contact_number = models.CharField(max_length=50, default="")
-    User_join_date = models.DateField()
-    profile_picture = models.ImageField(upload_to='Ex_Routines/userprofile', null=True, blank=True)
+# class CustomUser(AbstractUser):
+#     User_id = models.AutoField
+#     User_name = models.CharField(max_length=50, default="")
+#     User_contact_number = models.CharField(max_length=50, default="")
+#     User_join_date = models.DateField()
+#     profile_picture = models.ImageField(upload_to='Ex_Routines/userprofile', null=True, blank=True)
 
-    def __str__(self):
-        return self.User_name
+#     def __str__(self):
+#         return self.User_name
     
 class ex_routines(models.Model):
     routine_id = models.AutoField
@@ -31,7 +31,13 @@ class ex_routines(models.Model):
     def __str__(self):
         return self.routine_name
     
-    
+class CalorieEntry(models.Model):
+    calories_consumed = models.FloatField()
+    time = models.TimeField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f'{self.calories_consumed} calories on {self.date} at {self.time}'
 # class Product(models.Model):
 #     routine_id = models.AutoField
 #     routine_name = models.CharField(max_length=50)

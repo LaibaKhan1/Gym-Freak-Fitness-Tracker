@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ex_routines
+from .models import ex_routines, CalorieEntry
 from math import ceil
 import requests
+from .forms import CalorieEntryForm
 # Create your views here.
 
 def blog(request):
@@ -74,6 +75,19 @@ def Meal_Tracker(request):
         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
+
+def calorie_entry(request):
+    if request.method == 'POST':
+        form = CalorieEntryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('calorie_entry')  # Redirect to the same page after submission
+    else:
+        form = CalorieEntryForm()
+
+    entries = CalorieEntry.objects.all()
+
+    return render(request, 'calorie_entry.html', {'form': form, 'entries': entries})
 
 def Activity_Tracker(request):
     if request.method == 'POST':
