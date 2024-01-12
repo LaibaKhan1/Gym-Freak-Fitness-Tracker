@@ -30,10 +30,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 # AUTH_USER_MODEL = 'login_signup.CustomUser'
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1073741824
 INSTALLED_APPS = [
     'GymFreak.apps.GymFreakConfig',
-    # 'GymFreak.apps.login_signupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

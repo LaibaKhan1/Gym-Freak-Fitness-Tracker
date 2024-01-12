@@ -51,6 +51,10 @@ class CaloriesBurned(models.Model):
     def __str__(self):
         return self.weight
     
+class LoginPageSettings(models.Model):
+    background_image = models.ImageField(upload_to='loginPage/')
+    login_video = models.FileField(upload_to='loginPage/')
+    
     # def calculate_calories_burned(self):
         # Constants for Harris-Benedict equation
         # BMR_MALE = 88.362

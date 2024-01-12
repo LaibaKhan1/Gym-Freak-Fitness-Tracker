@@ -29,7 +29,8 @@ urlpatterns = [
     path("exercise/<int:myid>", views.exerciseView, name='exercise'),
     path("Activity_Tracker/", views.Activity_Tracker, name='Activity_Tracker'),
     path("Meal_Tracker/", views.Meal_Tracker, name='Meal_Tracker'),
-    # path('login/', your_login_view, name='login'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name = 'signup'),
     # path('register/', your_register_view, name='register'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout')
 ]
