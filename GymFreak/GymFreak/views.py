@@ -123,7 +123,6 @@ def Meal_Tracker(request):
 
         total_calories = sum([calories[0] for calories in [breakfast_calories, lunch_calories, dinner_calories] if calories is not None])
 
-        # Save calories consumed for each meal to the database
         now = datetime.now()
         date = now.date()
         time = now.time()
@@ -194,7 +193,6 @@ def Activity_Tracker(request):
 
         CaloriesBurnedEntry.objects.create(calories_burned=round(calories_burned, 2), date=date, time=time)
 
-    # Get all calories burned entries from the database
     calories_burned_entries = CaloriesBurnedEntry.objects.all()
 
     # Create a form instance and pass the entries to it
