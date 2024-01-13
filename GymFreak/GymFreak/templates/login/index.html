@@ -24,8 +24,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             display: flex;
-            max-width: 600px; /* Set a new maximum width */
-            width: 90%; /* Set width as a percentage of the viewport width */
+            max-width: 600px;
+            width: 90%; 
             height: 600px;
         }
 
@@ -79,8 +79,8 @@
             background-color: #880909;
         }
         a {
-        display: inline-block; /* Ensure the hyperlink behaves like a block element */
-        text-decoration: none; /* Remove underline from the link */
+        display: inline-block;
+        text-decoration: none; 
         background-color: #550b0b;
         color: #fff;
         padding: 10px;
@@ -89,7 +89,7 @@
         cursor: pointer;
         width: 100%;
         margin-top: 16px;
-        text-align: center; /* Center the text within the button */
+        text-align: center;
         }
         a:hover {
         background-color: #880909;
@@ -116,7 +116,7 @@
             <h2>Login</h2>
             <form method="post" action="{% url 'loginn' %}">
                 {% csrf_token %}
-                <label for="username">Email:</label>
+                <label for="username">UserName:</label>
                 <input type="text" id="username" name="username" required>
 
                 <label for="password">Password:</label>
