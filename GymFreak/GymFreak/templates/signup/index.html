@@ -25,16 +25,16 @@
             overflow: hidden;
             display: flex;
             max-width: 600px;
-            width: 90%; /* Set width as a percentage of the viewport width */
+            width: 90%;
             height: 600px;
         }
 
         .signup-form {
             padding: 20px;
             flex: 1;
-            overflow-y: auto; /* Add this line to enable vertical scrollbar */
-            overflow-y: auto; /* Add this line to enable vertical scrollbar */
-            max-height: 400px; /* Set a fixed height for the form container */
+            overflow-y: auto;
+            overflow-y: auto; 
+            max-height: 400px;
         }
 
         .signup-image {
@@ -82,8 +82,8 @@
             background-color: #880909;
         }
         a {
-        display: inline-block; /* Ensure the hyperlink behaves like a block element */
-        text-decoration: none; /* Remove underline from the link */
+        display: inline-block; 
+        text-decoration: none; 
         background-color: #550b0b;
         color: #fff;
         padding: 10px;
@@ -92,7 +92,7 @@
         cursor: pointer;
         width: 100%;
         margin-top: 16px;
-        text-align: center; /* Center the text within the button */
+        text-align: center;
         }
         a:hover {
         background-color: #880909;
@@ -136,7 +136,6 @@
             cursor: pointer;
         }
 
-        /* Style for the file input on hover */
         .file-input-container input[type="file"]:hover {
             background-color: #e0e0e0;
         }
@@ -146,19 +145,18 @@
     <div class="signup-container">
         <div class="signup-form">
             <h2>Signup</h2>
-            <form id="signup-form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                
-                <!-- Show success message if available -->
-                {% if messages %}
-                    {% for message in messages %}
-                        <p class="success-message">{{ message }}</p>
-                    {% endfor %}
-                {% endif %}
-                
-                <a href="" onclick="submitForm()">Signup</a>
-            </form>
+            <form id="signup-form" method="post" enctype="multipart/form-data" onsubmit="submitForm(event)">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    {% if messages %}
+        {% for message in messages %}
+            <p class="success-message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    
+    <button type="submit">Signup</button>
+</form>
             
             <a href="{% url 'loginn' %}">Have an account? Login</a>
         </div>

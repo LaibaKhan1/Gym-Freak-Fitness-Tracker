@@ -37,12 +37,14 @@ def loginn(request):
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
+        print(form.is_valid())
         if form.is_valid():
             form.save()
-            messages.success(request, 'Account created successfully. Please log in.')  # Add success message
-            return redirect('login')  # Redirect to login page after successful signup
+            messages.success(request, 'Account created successfully. Please log in.')
+            return redirect('loginn')
     else:
         form = CustomUserCreationForm()
+        print(form.errors)
 
     login_page_settings = LoginPageSettings.objects.first()
     return render(request, 'signup/index.html', {'login_page_settings': login_page_settings, 'form': form})
@@ -116,7 +118,7 @@ def calorie_entry(request):
         form = CalorieEntryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('calorie_entry')  # Redirect to the same page after submission
+            return redirect('calorie_entry')
     else:
         form = CalorieEntryForm()
 
@@ -166,33 +168,3 @@ def Activity_Tracker(request):
 def calculate_bmi(weight, height):
     bmi = weight / ((height / 100) ** 2)
     return bmi
-
-# def calculate_calories_burned(weight, height, age, activity_level):
-#     api_key = '4d5a3265e8bb88415d11ed602f0aa05a'
-#     api_endpoint = 'https://api.nutritionix.com/v1_1/exercise'
-
-#     payload = {
-#         'query': activity_level,
-#         'gender': 'male',
-#         'weight_kg': weight,
-#         'height_cm': height,
-#         'age': age,
-#     }
-
-#     headers = {
-#         'x-app-id': api_key,
-#         'x-app-key': 'b23c54ae',
-#     }
-
-#     try:
-#         response = requests.post(api_endpoint, data=payload, headers=headers)
-#         response.raise_for_status()
-#         data = response.json()
-
-#         calories_burned = data.get('exercises', [{}])[0].get('nf_calories', 0)
-
-#         return calories_burned
-
-#     except requests.exceptions.RequestException as e:
-#         print(f"Error fetching calories burned: {e}")
-#         return 0
