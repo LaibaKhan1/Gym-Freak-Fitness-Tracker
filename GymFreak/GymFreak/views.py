@@ -51,12 +51,12 @@ def signup(request):
     login_page_settings = LoginPageSettings.objects.first()
     return render(request, 'signup/index.html', {'login_page_settings': login_page_settings, 'form': form})
 
-@login_required  # Use this decorator to ensure the user is logged in before accessing the profile page
+@login_required 
 def profile(request):
-    user = request.user  # Get the current user from the request object
+    user = request.user
 
     context = {
-        'user_name': user.username,  # Assuming you want the full name
+        'user_name': user.username,
         'user_email': user.email,
         'user_contact': user.contact_number,
     }
@@ -123,7 +123,6 @@ def Meal_Tracker(request):
 
         total_calories = sum([calories[0] for calories in [breakfast_calories, lunch_calories, dinner_calories] if calories is not None])
 
-        # Save calories consumed for each meal to the database
         now = datetime.now()
         date = now.date()
         time = now.time()
@@ -194,7 +193,6 @@ def Activity_Tracker(request):
 
         CaloriesBurnedEntry.objects.create(calories_burned=round(calories_burned, 2), date=date, time=time)
 
-    # Get all calories burned entries from the database
     calories_burned_entries = CaloriesBurnedEntry.objects.all()
 
     # Create a form instance and pass the entries to it
