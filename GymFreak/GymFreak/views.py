@@ -4,17 +4,17 @@ from .models import CaloriesBurnedEntry, ex_routines, CalorieEntry, CaloriesBurn
 from .forms import CalorieEntryForm, CaloriesBurnedEntryForm
 from math import ceil
 import requests
-from django.contrib.auth import login, authenticate     
+from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm
 # from .forms import CalorieEntryForm
 from django.contrib import messages
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+@login_required
 def blog(request):
     return render(request, 'Blog/index.html')
-
+@login_required
 def index(request):
     return render(request, 'GymFreak/index.html')
 
@@ -26,7 +26,6 @@ def loginn(request):
         password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             login(request, user)
             messages.success(request, 'Login successful.')
@@ -36,22 +35,26 @@ def loginn(request):
 
     return render(request, 'login/index.html', {'login_page_settings': login_page_settings})
 
+def custom_logout(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('loginn')
+    return redirect('loginn')
+
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
-        print(form.is_valid())
         if form.is_valid():
             form.save()
             messages.success(request, 'Account created successfully. Please log in.')
             return redirect('loginn')
     else:
         form = CustomUserCreationForm()
-        print(form.errors)
 
     login_page_settings = LoginPageSettings.objects.first()
     return render(request, 'signup/index.html', {'login_page_settings': login_page_settings, 'form': form})
 
-@login_required 
+@login_required
 def profile(request):
     user = request.user
 
@@ -63,6 +66,7 @@ def profile(request):
 
     return render(request, "profile/index.html", context)
 
+@login_required
 def Ex_Routines(request):
     categories = ex_routines.objects.values_list('category', flat=True).distinct()
 
@@ -75,6 +79,7 @@ def Ex_Routines(request):
 
     return render(request, 'Ex_Routines/index.html', {'allProds': allProds})
 
+@login_required
 def exerciseView(request, myid):
     exercise = ex_routines.objects.filter(id=myid)
     return render(request, 'Ex_Routines/exeview.html', {'product': exercise[0]})
@@ -105,9 +110,10 @@ def calculate_calories(food_name):
                     return [total_calories]
         return [None]
     else:
-        print("API Request Failed. Status Code:", response.status_code)
+        # print("API Request Failed. Status Code:", response.status_code)
         return [None]
 
+@login_required(login_url='loginn')
 def Meal_Tracker(request):
     if request.method == 'POST':
         breakfast_diet = request.POST.get('breakfast_diet', '')
@@ -140,6 +146,7 @@ def Meal_Tracker(request):
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
 
+@login_required
 def calorie_entry(request):
     if request.method == 'POST':
         form = CalorieEntryForm(request.POST)
@@ -163,7 +170,6 @@ def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes)
         'active': 1.725,
         'very_active': 1.9,
     }
-    # print(gender)
     if gender == 'M':
         bmr = BMR_MALE + (13.397 * weight) + (4.799 * height) - (5.677 * age)
     else:
@@ -172,6 +178,7 @@ def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes)
     calories_burned = bmr * ACTIVITY_FACTOR.get(exercise_type, 1.0) * (duration_minutes / 60.0)
     return calories_burned
 
+@login_required
 def Activity_Tracker(request):
     bmi = 0.0  # Default value
     calories_burned = 0.0  # Default value
@@ -195,7 +202,6 @@ def Activity_Tracker(request):
 
     calories_burned_entries = CaloriesBurnedEntry.objects.all()
 
-    # Create a form instance and pass the entries to it
     form = CaloriesBurnedEntryForm()
 
     return render(request, 'Activity_Tracker/index.html', {

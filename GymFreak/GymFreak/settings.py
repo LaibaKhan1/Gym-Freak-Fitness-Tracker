@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGOUT_REDIRECT_URL = '/loginn/'
 # Application definition
 AUTH_USER_MODEL = 'GymFreak.CustomUser'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1073741824
@@ -117,7 +117,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+LOGIN_URL = '/loginn/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'GymFreak/static')
 STATIC_URL = '/static/'
 # Managing media
