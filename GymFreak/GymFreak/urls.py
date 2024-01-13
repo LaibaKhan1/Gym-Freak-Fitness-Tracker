@@ -23,7 +23,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", views.index, name='GymFreak'),
+    path("", views.profile, name='GymFreak'),
+    # path('', views.profile, name='profile'),
     path("Blog/", views.blog, name='Blog'),
     path("Ex_Routines/", views.Ex_Routines, name='Ex_Routines'),
     path("exercise/<int:myid>", views.exerciseView, name='exercise'),

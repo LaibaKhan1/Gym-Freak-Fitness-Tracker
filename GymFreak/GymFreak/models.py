@@ -33,23 +33,39 @@ class ex_routines(models.Model):
     
 class CalorieEntry(models.Model):
     calories_consumed = models.FloatField()
-    time = models.TimeField()
     date = models.DateField()
+    time = models.TimeField()
 
     def __str__(self):
         return f'{self.calories_consumed} calories on {self.date} at {self.time}'
     
-class CaloriesBurned(models.Model):
-    time = models.TimeField()
-    date = models.DateField()
-    weight = models.FloatField()
-    age = models.IntegerField()
-    gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
-    exercise_type = models.CharField(max_length=255)
-    duration_minutes = models.IntegerField()
+# class CaloriesBurned(models.Model):
+#     time = models.TimeField()
+#     date = models.DateField()
+#     weight = models.FloatField()
+#     age = models.IntegerField()
+#     gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
+#     exercise_type = models.CharField(max_length=255)
+#     duration_minutes = models.IntegerField()
     
+#     def __str__(self):
+#         return self.weight
+    
+class BMIEntry(models.Model):
+    bmi_value = models.FloatField()
+    date = models.DateField()
+    time = models.TimeField()
+
     def __str__(self):
-        return self.weight
+        return f'BMI: {self.bmi_value} on {self.date} at {self.time}'
+    
+class CaloriesBurnedEntry(models.Model):
+    calories_burned = models.FloatField()
+    date = models.DateField()
+    time = models.TimeField()
+
+    def __str__(self):
+        return f'Calories Burned: {self.calories_burned} on {self.date} at {self.time}'
     
 class LoginPageSettings(models.Model):
     background_image = models.ImageField(upload_to='loginPage/')

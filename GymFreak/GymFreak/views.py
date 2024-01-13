@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ex_routines, CalorieEntry, CaloriesBurned, LoginPageSettings
-from .forms import CalorieBurnedEntryForm, CalorieEntryForm
+from .models import CaloriesBurnedEntry, ex_routines, CalorieEntry, CaloriesBurnedEntry, LoginPageSettings
+from .forms import CalorieEntryForm, CaloriesBurnedEntryForm
 from math import ceil
 import requests
 from django.contrib.auth import login, authenticate 
 from .forms import CustomUserCreationForm
-from .forms import CalorieEntryForm
+# from .forms import CalorieEntryForm
 from django.contrib import messages
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def blog(request):
@@ -48,6 +50,18 @@ def signup(request):
 
     login_page_settings = LoginPageSettings.objects.first()
     return render(request, 'signup/index.html', {'login_page_settings': login_page_settings, 'form': form})
+
+@login_required  # Use this decorator to ensure the user is logged in before accessing the profile page
+def profile(request):
+    user = request.user  # Get the current user from the request object
+
+    context = {
+        'user_name': user.username,  # Assuming you want the full name
+        'user_email': user.email,
+        'user_contact': user.contact_number,
+    }
+
+    return render(request, "profile/index.html", context)
 
 def Ex_Routines(request):
     categories = ex_routines.objects.values_list('category', flat=True).distinct()
@@ -109,6 +123,20 @@ def Meal_Tracker(request):
 
         total_calories = sum([calories[0] for calories in [breakfast_calories, lunch_calories, dinner_calories] if calories is not None])
 
+        # Save calories consumed for each meal to the database
+        now = datetime.now()
+        date = now.date()
+        time = now.time()
+
+        if breakfast_calories is not None:
+            CalorieEntry.objects.create(calories_consumed=breakfast_calories[0], date=date, time=time)
+
+        if lunch_calories is not None:
+            CalorieEntry.objects.create(calories_consumed=lunch_calories[0], date=date, time=time)
+
+        if dinner_calories is not None:
+            CalorieEntry.objects.create(calories_consumed=dinner_calories[0], date=date, time=time)
+
         return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
@@ -146,6 +174,9 @@ def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes)
     return calories_burned
 
 def Activity_Tracker(request):
+    bmi = 0.0  # Default value
+    calories_burned = 0.0  # Default value
+
     if request.method == 'POST':
         weight = float(request.POST.get('weight'))
         height = float(request.POST.get('height'))
@@ -157,13 +188,24 @@ def Activity_Tracker(request):
         bmi = calculate_bmi(weight, height)
         calories_burned = calorie_Burned(weight, height, age, gender, exercise_type, duration)
 
-        return render(request, 'Activity_Tracker/index.html', {
-            'bmi_calculated': True,
-            'bmi': round(bmi, 2),
-            'calories_burned': round(calories_burned, 2),
-        })
+        now = datetime.now()
+        date = now.date()
+        time = now.time()
 
-    return render(request, 'Activity_Tracker/index.html')
+        CaloriesBurnedEntry.objects.create(calories_burned=round(calories_burned, 2), date=date, time=time)
+
+    # Get all calories burned entries from the database
+    calories_burned_entries = CaloriesBurnedEntry.objects.all()
+
+    # Create a form instance and pass the entries to it
+    form = CaloriesBurnedEntryForm()
+
+    return render(request, 'Activity_Tracker/index.html', {
+        'bmi_calculated': True,
+        'bmi': round(bmi, 2),
+        'calories_burned': round(calories_burned, 2),
+        'form': form,
+    })
 
 def calculate_bmi(weight, height):
     bmi = weight / ((height / 100) ** 2)
