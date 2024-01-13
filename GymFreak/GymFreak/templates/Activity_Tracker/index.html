@@ -11,7 +11,14 @@
           crossorigin="anonymous">
 
     <title>Activity Tracker - Gym Freak</title>
+    {% load static %}
     <style>
+        body{
+        background-image: url('{% static "GymFreak/images/back.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        }
         .container {
             margin-top: 30px;
         }
@@ -57,6 +64,7 @@
         .row-eq-height {
             display: flex;
             flex-wrap: wrap;
+            background-color: white;
         }
 
         .row-eq-height [class*="col-"] {
@@ -102,7 +110,7 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
         </form>
     </div>
 </nav>

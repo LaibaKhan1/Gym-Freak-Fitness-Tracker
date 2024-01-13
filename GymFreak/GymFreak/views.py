@@ -4,7 +4,7 @@ from .models import CaloriesBurnedEntry, ex_routines, CalorieEntry, CaloriesBurn
 from .forms import CalorieEntryForm, CaloriesBurnedEntryForm
 from math import ceil
 import requests
-from django.contrib.auth import login, authenticate 
+from django.contrib.auth import login, authenticate     
 from .forms import CustomUserCreationForm
 # from .forms import CalorieEntryForm
 from django.contrib import messages
