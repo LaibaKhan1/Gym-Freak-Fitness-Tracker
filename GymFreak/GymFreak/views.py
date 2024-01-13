@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ex_routines, CalorieEntry, CaloriesBurned
+from .models import ex_routines, CalorieEntry, CaloriesBurned, LoginPageSettings
 from .forms import CalorieBurnedEntryForm, CalorieEntryForm
 from math import ceil
 import requests
+from django.contrib.auth import login, authenticate 
+from .forms import CustomUserCreationForm
 from .forms import CalorieEntryForm
+from django.contrib import messages
 # Create your views here.
 
 def blog(request):
@@ -12,6 +15,39 @@ def blog(request):
 
 def index(request):
     return render(request, 'GymFreak/index.html')
+
+def loginn(request):
+    login_page_settings = LoginPageSettings.objects.first()
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        print(user)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Login successful.')
+            return redirect('GymFreak')
+        else:
+            messages.error(request, 'Invalid login credentials. Please try again.')
+
+    return render(request, 'login/index.html', {'login_page_settings': login_page_settings})
+
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, request.FILES)
+        print(form.is_valid())
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Account created successfully. Please log in.')
+            return redirect('loginn')
+    else:
+        form = CustomUserCreationForm()
+        print(form.errors)
+
+    login_page_settings = LoginPageSettings.objects.first()
+    return render(request, 'signup/index.html', {'login_page_settings': login_page_settings, 'form': form})
 
 def Ex_Routines(request):
     categories = ex_routines.objects.values_list('category', flat=True).distinct()
@@ -82,7 +118,7 @@ def calorie_entry(request):
         form = CalorieEntryForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('calorie_entry')  # Redirect to the same page after submission
+            return redirect('calorie_entry')
     else:
         form = CalorieEntryForm()
 
@@ -100,6 +136,7 @@ def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes)
         'active': 1.725,
         'very_active': 1.9,
     }
+    # print(gender)
     if gender == 'M':
         bmr = BMR_MALE + (13.397 * weight) + (4.799 * height) - (5.677 * age)
     else:
@@ -131,33 +168,3 @@ def Activity_Tracker(request):
 def calculate_bmi(weight, height):
     bmi = weight / ((height / 100) ** 2)
     return bmi
-
-# def calculate_calories_burned(weight, height, age, activity_level):
-#     api_key = '4d5a3265e8bb88415d11ed602f0aa05a'
-#     api_endpoint = 'https://api.nutritionix.com/v1_1/exercise'
-
-#     payload = {
-#         'query': activity_level,
-#         'gender': 'male',
-#         'weight_kg': weight,
-#         'height_cm': height,
-#         'age': age,
-#     }
-
-#     headers = {
-#         'x-app-id': api_key,
-#         'x-app-key': 'b23c54ae',
-#     }
-
-#     try:
-#         response = requests.post(api_endpoint, data=payload, headers=headers)
-#         response.raise_for_status()
-#         data = response.json()
-
-#         calories_burned = data.get('exercises', [{}])[0].get('nf_calories', 0)
-
-#         return calories_burned
-
-#     except requests.exceptions.RequestException as e:
-#         print(f"Error fetching calories burned: {e}")
-#         return 0

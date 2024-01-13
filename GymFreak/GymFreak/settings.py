@@ -29,11 +29,10 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-# AUTH_USER_MODEL = 'login_signup.CustomUser'
-
+AUTH_USER_MODEL = 'GymFreak.CustomUser'
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1073741824
 INSTALLED_APPS = [
     'GymFreak.apps.GymFreakConfig',
-    # 'GymFreak.apps.login_signupConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +49,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 ROOT_URLCONF = 'GymFreak.urls'
 
 TEMPLATES = [
