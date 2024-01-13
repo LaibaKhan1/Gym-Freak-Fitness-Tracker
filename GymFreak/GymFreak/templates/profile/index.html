@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <title>GymFreak</title>
+
+  <!-- Custom styles -->
+  <style>
+    .btn-primary {
+        background-color: #007bff; /* Primary button background color */
+        border-color: #007bff; /* Primary button border color */
+        color: #ffffff; /* Primary button text color */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Primary button background color on hover */
+        border-color: #0056b3; /* Primary button border color on hover */
+        color: #ffffff; /* Primary button text color on hover */
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Secondary button background color */
+        border-color: #6c757d; /* Secondary button border color */
+        color: #ffffff; /* Secondary button text color */
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62; /* Secondary button background color on hover */
+        border-color: #545b62; /* Secondary button border color on hover */
+        color: #ffffff; /* Secondary button text color on hover */
+    }   
+    .col-md-3{
+      display: inline-block;
+      margin-left:-4px;
+    }
+    .carousel-indicators .active {
+      background-color: blue;
+    }
+    .col-md-3 img{
+      width: 170px;
+      height: 200px;
+    }
+    body .carousel-indicator li{
+      background-color: blue;
+    }
+    body .carousel-indicators{
+      bottom: 0;
+    }
+    body .carousel-control-prev-icon,
+    body .carousel-control-next-icon{
+      background-color: blue;
+    }
+    .carousel-control-prev,
+    .carousel-control-next{
+      top: auto;
+      bottom: auto;
+      padding-top: 222px;
+    }
+    body .no-padding{
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .profile-section {
+      border-right: 1px solid #dee2e6;
+      height: 100vh;
+    }
+    
+    .main-section {
+      padding: 20px;
+    }
+    
+    .navbar {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Gym Freak</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Ex_Routines/">Exercise Routines</a>
+            </li>
+      
+            <li class="nav-item">
+              <a class="nav-link" href="/Meal_Tracker/">Meal Tracker</a>
+            </li>
+      
+            <li class="nav-item">
+              <a class="nav-link" href="/Blog/">Blog</a>
+            </li>
+      
+            <li class="nav-item">
+              <a class="nav-link" href="/Activity_Tracker/">Activity Tracker</a>
+            </li>
+          </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <!-- <button type="button" class="btn btn-secondary mx-2" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" data-content="Vivamus
+  sagittis lacus vel augue laoreet rutrum faucibus.">
+  
+  
+    Cart(<span id="cart">0</span>)
+  </button> -->
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 profile-section">
+        <h3>Profile</h3>
+        <p>Name: {{ user_name }}</p>
+        <p>Email: {{ user_email }}</p>
+        <p>Contact Number: {{ user_contact }}</p>
+        <br>
+        <button class="btn btn-primary">BMI</button>
+        <button class="btn btn-primary mb-2">Calculate Consumed</button>
+        <button class="btn btn-primary mb-2">Calculate  Burned</button>
+      </div>
+      <div class="col-md-9 main-section">
+        <!-- <h3>Calorie Tracker</h3>
+        <input type="number" class="form-control mb-2" placeholder="Calories Consumed">
+        <input type="number" class="form-control mb-2" placeholder="Calories Burned">
+        <button class="btn btn-primary mb-2">Calculate Balance</button>
+        <h3>BMI Calculator</h3>
+        <input type="number" class="form-control mb-2" placeholder="Weight (kg)">
+        <input type="number" class="form-control mb-2" placeholder="Height (cm)">
+        <button class="btn btn-primary">Calculate BMI</button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
