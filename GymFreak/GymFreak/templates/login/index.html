@@ -121,6 +121,7 @@
 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+                <div id="notification-container"></div>
                 
                 <p class="forgot-password"><a href="#">Forgot Password?</a></p>
 
@@ -131,4 +132,28 @@
         </div>
     </div>
 </body>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Check if there are messages to display
+        {% if messages %}
+            // Create a container for messages
+            var notificationContainer = $('#notification-container');
+
+            // Iterate over messages and create a Bootstrap alert for each
+            {% for message in messages %}
+                var alertClass = {% if message.tags == 'success' %}'alert-success'{% else %}'alert-danger'{% endif %};
+                var messageHTML = '<div class="alert ' + alertClass + ' alert-dismissible fade show" role="alert">' +
+                                     '{{ message }}' +
+                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                  '</div>';
+
+                // Append the alert to the container
+                notificationContainer.append(messageHTML);
+            {% endfor %}
+        {% endif %}
+    });
+</script>
 </html>
