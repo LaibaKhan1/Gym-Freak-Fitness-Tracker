@@ -7,7 +7,6 @@ from math import ceil
 import requests
 from django.contrib.auth import login, authenticate, logout
 from .forms import CustomUserCreationForm
-# from .forms import CalorieEntryForm
 from django.contrib import messages
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -122,7 +121,6 @@ def calculate_calories(food_name):
                     return [total_calories]
         return [None]
     else:
-        # print("API Request Failed. Status Code:", response.status_code)
         return [None]
 
 @login_required(login_url='loginn')
@@ -160,7 +158,6 @@ def Meal_Tracker(request):
             return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
         except IntegrityError:
-            # Handle the case where there's an integrity error (e.g., duplicate entry)
             return render(request, 'Meal_Tracker/index.html', {'thank': False, 'error_message': 'Error saving calories entry.'})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
@@ -199,8 +196,8 @@ def calorie_Burned(weight, height, age, gender, exercise_type, duration_minutes)
 
 @login_required
 def Activity_Tracker(request):
-    bmi = 0.0  # Default value
-    calories_burned = 0.0  # Default value
+    bmi = 0.0
+    calories_burned = 0.0 
 
     if request.method == 'POST':
         weight = float(request.POST.get('weight'))
