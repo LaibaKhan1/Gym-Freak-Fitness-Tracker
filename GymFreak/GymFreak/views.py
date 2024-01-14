@@ -1,6 +1,7 @@
+from sqlite3 import IntegrityError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import CaloriesBurnedEntry, ex_routines, CalorieEntry, CaloriesBurnedEntry, LoginPageSettings
+from .models import CaloriesBurnedEntry, ex_routines, CalorieEntry, CaloriesBurnedEntry, LoginPageSettings, BMIEntry
 from .forms import CalorieEntryForm, CaloriesBurnedEntryForm
 from math import ceil
 import requests
@@ -63,6 +64,17 @@ def profile(request):
         'user_email': user.email,
         'user_contact': user.contact_number,
     }
+
+    if request.method == 'POST':
+        if 'bmi' in request.POST:
+            bmi_entries = BMIEntry.objects.all()
+            context.update({'display_bmi_table': True, 'bmi_entries': bmi_entries})
+        elif 'calories_consumed' in request.POST:
+            calorie_entries = CalorieEntry.objects.all()
+            context.update({'display_calories_consumed_table': True, 'calorie_entries': calorie_entries})
+        elif 'calories_burned' in request.POST:
+            calories_burned_entries = CaloriesBurnedEntry.objects.all()
+            context.update({'display_calories_burned_table': True, 'calories_burned_entries': calories_burned_entries})
 
     return render(request, "profile/index.html", context)
 
@@ -133,16 +145,23 @@ def Meal_Tracker(request):
         date = now.date()
         time = now.time()
 
-        if breakfast_calories is not None:
-            CalorieEntry.objects.create(calories_consumed=breakfast_calories[0], date=date, time=time)
+        try:
+            print(breakfast_calories)
+            if breakfast_calories is not None:
+                CalorieEntry.objects.create(calories_consumed=breakfast_calories[0], date=date, time=time)
 
-        if lunch_calories is not None:
-            CalorieEntry.objects.create(calories_consumed=lunch_calories[0], date=date, time=time)
+            if lunch_calories is not None:
+                CalorieEntry.objects.create(calories_consumed=lunch_calories[0], date=date, time=time)
 
-        if dinner_calories is not None:
-            CalorieEntry.objects.create(calories_consumed=dinner_calories[0], date=date, time=time)
+            if dinner_calories is not None:
+                CalorieEntry.objects.create(calories_consumed=dinner_calories[0], date=date, time=time)
+            
+            print("Records created successfully")
+            return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
 
-        return render(request, 'Meal_Tracker/index.html', {'thank': True, 'total_calories': total_calories})
+        except IntegrityError:
+            # Handle the case where there's an integrity error (e.g., duplicate entry)
+            return render(request, 'Meal_Tracker/index.html', {'thank': False, 'error_message': 'Error saving calories entry.'})
 
     return render(request, 'Meal_Tracker/index.html', {'thank': False})
 

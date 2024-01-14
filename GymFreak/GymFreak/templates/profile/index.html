@@ -87,84 +87,210 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Gym Freak</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Ex_Routines/">Exercise Routines</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Meal_Tracker/">Meal Tracker</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Blog/">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Activity_Tracker/">Activity Tracker</a>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        {% csrf_token %}
-        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'logout' %}">Logout</a>
-      </form>
+    <div class="container">
+        <a class="navbar-brand" href="/">Gym Freak</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Ex_Routines/">Exercise Routines</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/Meal_Tracker/">Meal Tracker</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/Blog/">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/Activity_Tracker/">Activity Tracker</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'logout' %}">Logout</a>
+            </form>
+        </div>
     </div>
-  </nav>
+</nav>
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-3 profile-section">
         {% if user.profile_pic %}
-          <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="img-fluid mb-2">
+          <div class="text-center mb-3">
+            <div style="height: 150px; overflow: hidden; border-radius: 50%;">
+              <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="img-fluid" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+            </div>
+          </div>
         {% endif %}
-        <h3>Profile</h3>
-        <p>Name: {{ user_name }}</p>
-        <p>Email: {{ user_email }}</p>
-        <p>Contact Number: {{ user_contact }}</p>
-        <button class="btn btn-primary">BMI</button>
-        <button class="btn btn-primary mb-2">Calories Consumed</button>
-        <button class="btn btn-primary mb-2">Calories Burned</button>
+        <h3 class="text-primary">{{ user_name }}</h3>
+        <!-- <p><strong>Name:</strong> {{ user_name }}</p> -->
+        <p><strong>Email:</strong> {{ user_email }}</p>
+        <p><strong>Contact Number:</strong> {{ user_contact }}</p>
+        <form method="post" class="form-inline my-2 my-lg-0">
+          {% csrf_token %}
+          <button type="submit" name="bmi" class="btn btn-primary btn-block mb-2">BMI</button>
+          <button type="submit" name="calories_consumed" class="btn btn-primary btn-block mb-2">Calories Consumed</button>
+          <button type="submit" name="calories_burned" class="btn btn-primary btn-block mb-2">Calories Burned</button>
+          <!-- <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'logout' %}">Logout</a> -->
+      </form>
       </div>
+      
       <div class="col-md-9 main-section">
         {% if thank %}
-<div class="mt-3">
-    <p>Total Calories: <strong>{{ total_calories }}</strong></p>
-</div>
-{% endif %}
-
-<!-- Add this table for displaying calorie history -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Calories Consumed</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for entry in calorie_entries %}
-            <tr>
-                <td>{{ entry.date }}</td>
-                <td>{{ entry.time }}</td>
-                <td>{{ entry.calories_consumed }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-      </table>
+          <div class="mt-3">
+            <br>
+            <br>
+            <p>Total Calories: <strong>{{ total_calories }}</strong></p>
+          </div>
+        {% endif %}
+      
+        <!-- Table Styling -->
+        <div class="table-responsive">
+          {% if display_bmi_table %}
+            <table class="table table-bordered table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>BMI Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in bmi_entries %}
+                  <tr>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.bmi_value }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="chart-container">
+              <canvas id="myLineChart"></canvas>
+            </div>
+          {% elif display_calories_consumed_table %}
+            <table class="table table-bordered table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Calories Consumed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in calorie_entries %}
+                  <tr>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.calories_consumed }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="chart-container">
+              <canvas id="myLineChart"></canvas>
+            </div>
+          {% elif display_calories_burned_table %}
+            <table class="table table-bordered table-hover">
+              <thead class="thead-light">
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Calories Burned</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for entry in calories_burned_entries %}
+                  <tr>
+                    <td>{{ entry.date }}</td>
+                    <td>{{ entry.time }}</td>
+                    <td>{{ entry.calories_burned }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="chart-container">
+              <canvas id="myLineChart"></canvas>
+            </div>
+          {% endif %}
+        </div>
       </div>
-    </div>
   </div>
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
+<script>
+  function createLineChart(labels, data, chartTitle, xAxisLabel, yAxisLabel, chartContainerId) {
+    var ctx = document.getElementById(chartContainerId).getContext('2d');
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: chartTitle,
+          data: data,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 2,
+          fill: false
+        }]
+      },
+      options: {
+        scales: {
+          x: [{
+            scaleLabel: {
+              display: true,
+              labelString: xAxisLabel
+            }
+          }],
+          y: [{
+            scaleLabel: {
+              display: true,
+              labelString: yAxisLabel
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  // Sample data for testing
+  var sampleLabels = [];
+  var sampleData = [];
+
+  // Modify the following logic based on the data from your Django backend
+  {% if display_bmi_table %}
+    {% for entry in bmi_entries %}
+      sampleLabels.push("{{ entry.date }}");
+      sampleData.push({{ entry.bmi_value }});
+    {% endfor %}
+  {% elif display_calories_consumed_table %}
+    {% for entry in calorie_entries %}
+      sampleLabels.push("{{ entry.date }}");
+      sampleData.push({{ entry.calories_consumed }});
+    {% endfor %}
+  {% elif display_calories_burned_table %}
+    {% for entry in calories_burned_entries %}
+      sampleLabels.push("{{ entry.date }}");
+      sampleData.push({{ entry.calories_burned }});
+    {% endfor %}
+  {% endif %}
+
+  // Call the function to create the line chart
+  createLineChart(sampleLabels, sampleData, 'Sample Line Chart', 'Date', 'Value', 'myLineChart');
+</script>
 </html>
